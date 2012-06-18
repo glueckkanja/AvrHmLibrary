@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "HmDimmerEvg", "HmDimmerEvg.cproj", "{59DEB740-EDF1-4298-878A-D0FD4ADDD253}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59DEB740-EDF1-4298-878A-D0FD4ADDD253}.Debug|AVR.ActiveCfg = Debug|AVR
+		{59DEB740-EDF1-4298-878A-D0FD4ADDD253}.Debug|AVR.Build.0 = Debug|AVR
+		{59DEB740-EDF1-4298-878A-D0FD4ADDD253}.Release|AVR.ActiveCfg = Release|AVR
+		{59DEB740-EDF1-4298-878A-D0FD4ADDD253}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

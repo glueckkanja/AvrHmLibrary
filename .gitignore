@@ -1,0 +1,7 @@
+*.atsuo
+*.d
+*.o
+*.su*
+
+/HmDimmerEvg/Debug
+/HmDimmerEvg/Release
