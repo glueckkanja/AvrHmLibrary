@@ -1,5 +1,5 @@
 /*
- * hm.c
+ * hm_frames_system.c
  *
  * Created: 11.06.2012 13:36:29
  *  Author: fstorm
@@ -48,7 +48,7 @@ void hm_system_frm_handler()
 		hm_frm_in_ack_subtype = HM_FRM_ACK_NACK_SUBTYPE_NACK;
 		return;
 	}		
-	hm_is_message_from_ccu = peer_id == 0;
+	hm_is_frame_from_ccu = peer_id == 0;
 	
 	if (HM_FRM_ACK_NACK_IS(hm_frm_in))
 		return;	// ignore for now
@@ -70,7 +70,7 @@ void hm_system_frm_handler()
 	hm_frm_in_ack_subtype = HM_FRM_ACK_NACK_SUBTYPE_ACK;
 
 
-	if (HM_FRM_CONFIG_START_IS(hm_frm_in) && (hm_is_message_from_ccu || hm_is_waiting_for_pairing))
+	if (HM_FRM_CONFIG_START_IS(hm_frm_in) && (hm_is_frame_from_ccu || hm_is_waiting_for_pairing))
 	{
 		hm_mode_config_peer_id = hm_get_peer_id_by_addr_channel(&hm_frm_in.config_start.peer_address, hm_frm_in.config_start.peer_channel);
 		if (hm_mode_config_peer_id == -1)
@@ -86,12 +86,12 @@ void hm_system_frm_handler()
 		return;
 	}
 
-	if (hm_is_in_mode_config && (hm_is_message_from_ccu || hm_is_waiting_for_pairing))
+	if (hm_is_in_mode_config && (hm_is_frame_from_ccu || hm_is_waiting_for_pairing))
 	{
-		if (HM_FRM_CONFIG_WRITE_INDEX_IS(hm_frm_in) && hm_frm_in.config_write_pairs.channel == hm_mode_config_channel)
+		if (HM_FRM_CONFIG_WRITE_INDEX_IS(hm_frm_in) && hm_frm_in.config_write_index.channel == hm_mode_config_channel)
 		{
 			hm_config_write(hm_mode_config_channel, hm_mode_config_peer_id, hm_mode_config_param_list, 
-				hm_frm_in.config_write_pairs.param_pairs,  HM_FRM_CONFIG_WRITE_INDEX_GET_COUNT(hm_frm_in), &hm_frm_in.addr_src);
+				hm_frm_in.config_write_index.param_pairs,  HM_FRM_CONFIG_WRITE_INDEX_GET_COUNT(hm_frm_in), &hm_frm_in.addr_src);
 			
 			return;
 		}
@@ -108,7 +108,7 @@ void hm_system_frm_handler()
 	hm_is_waiting_for_pairing = false;
 	hm_is_in_mode_config = false;
 	
-	if (hm_is_message_from_ccu && HM_FRM_CONFIG_PARAM_REQ_IS(hm_frm_in))
+	if (hm_is_frame_from_ccu && HM_FRM_CONFIG_PARAM_REQ_IS(hm_frm_in))
 	{
 		int8_t peer_id = hm_get_peer_id_by_addr_channel(&hm_frm_in.config_param_req.peer_address, hm_frm_in.config_param_req.peer_channel);
 		int8_t bank_id = hm_config_get_param_bank_id(hm_frm_in.config_param_req.channel, peer_id, hm_frm_in.config_param_req.param_list, 0x01);
@@ -147,7 +147,7 @@ void hm_system_frm_handler()
 		return;
 	}		
 	
-	if (hm_is_message_from_ccu && HM_FRM_CONFIG_PEER_LIST_REQ_IS(hm_frm_in))
+	if (hm_is_frame_from_ccu && HM_FRM_CONFIG_PEER_LIST_REQ_IS(hm_frm_in))
 	{
 		HM_FRM_INFO_PEER_LIST_NEW(hm_frm_out, hm_frm_in.ctr, hm_frm_in.addr_src);
 		
@@ -163,7 +163,7 @@ void hm_system_frm_handler()
 		return;
 	}
 	
-	if (hm_is_message_from_ccu && HM_FRM_CONFIG_PEER_ADD_IS(hm_frm_in))
+	if (hm_is_frame_from_ccu && HM_FRM_CONFIG_PEER_ADD_IS(hm_frm_in))
 	{
 		if (hm_frm_in.config_peer_add_remove.peer_channel_a)
 			hm_init_peering(&hm_frm_in.config_peer_add_remove.peer_address, hm_frm_in.config_peer_add_remove.peer_channel_a);
@@ -173,7 +173,7 @@ void hm_system_frm_handler()
 		return;
 	}
 	
-	if (hm_is_message_from_ccu && HM_FRM_CONFIG_PEER_REMOVE_IS(hm_frm_in))
+	if (hm_is_frame_from_ccu && HM_FRM_CONFIG_PEER_REMOVE_IS(hm_frm_in))
 	{
 		if (hm_frm_in.config_peer_add_remove.peer_channel_a)
 			hm_remove_peering(&hm_frm_in.config_peer_add_remove.peer_address, hm_frm_in.config_peer_add_remove.peer_channel_a);
@@ -183,7 +183,7 @@ void hm_system_frm_handler()
 		return;
 	}
 	
-	if (hm_is_message_from_ccu && HM_FRM_RESET_IS(hm_frm_in))
+	if (hm_is_frame_from_ccu && HM_FRM_RESET_IS(hm_frm_in))
 	{
 		hm_config_reset();
 

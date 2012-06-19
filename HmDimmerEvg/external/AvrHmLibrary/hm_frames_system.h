@@ -1,13 +1,13 @@
 /*
- * hm_messages.h
+ * hm_frames_system.h
  *
  * Created: 11.06.2012 21:05:53
  *  Author: fstorm
  */ 
 
 
-#ifndef HM_MESSAGES_H_
-#define HM_MESSAGES_H_
+#ifndef HM_FRAMES_SYSTEM_H_
+#define HM_FRAMES_SYSTEM_H_
 
 
 #define HM_FRM_NEW(frm_buf_tgt, frm_len, frm_ctr, frm_type, frm_dst_addr) \
@@ -33,7 +33,7 @@ typedef struct {
 	uint8_t peer_channel_a;
 	uint8_t peer_channel_b;
 	uint8_t unknown;
-} hmmsg_device_info_t;
+} hm_frm_device_info_t;
 
 
 #define HM_FRM_CONFIG_PEER_ADD_IS(frm) ((frm).type == 0x01 && (frm).config_peer_add_remove.subtype == 0x01)
@@ -50,16 +50,16 @@ typedef struct {
 	uint24hm_t peer_address;
 	uint8_t peer_channel_a;
 	uint8_t peer_channel_b;
-} hmmsg_config_peer_add_remove_t;
+} hm_frm_config_peer_add_remove_t;
 
 #define HM_FRM_CONFIG_PEER_LIST_REQ_IS(frm) ((frm).type == 0x01 && (frm).config_peer_list_req.subtype == 0x03)
-#define INIT_HM_MSG_CONFIG_PEER_LIST_REQ(frm_buf_tgt, frm_dst_addr) \
+#define HM_FRM_CONFIG_PEER_LIST_REQ_NEW(frm_buf_tgt, frm_dst_addr) \
 	HM_FRM_NEW((frm_buf_tgt), 11, ++hm_frm_ctr, 0x01, (frm_dst_addr)); \
 	(frm_buf_tgt).config_peer_list_req.subtype = 0x03;
 typedef struct {
 	uint8_t channel;
 	uint8_t subtype;
-} hmmsg_config_peer_list_req_t;
+} hm_frm_config_peer_list_req_t;
 
 #define HM_FRM_CONFIG_PARAM_REQ_IS(frm) ((frm).type == 0x01 && (frm).config_param_req.subtype == 0x04)
 #define HM_FRM_CONFIG_PARAM_REQ_NEW(frm_buf_tgt, frm_dst_addr) \
@@ -71,7 +71,7 @@ typedef struct {
 	uint24hm_t peer_address;
 	uint8_t peer_channel;
 	uint8_t param_list;
-} hmmsg_config_param_req_t;
+} hm_frm_config_param_req_t;
 
 #define HM_FRM_CONFIG_START_IS(frm) ((frm).type == 0x01 && (frm).config_start.subtype == 0x05)
 #define HM_FRM_CONFIG_START_NEW(frm_buf_tgt, frm_dst_addr) \
@@ -83,7 +83,7 @@ typedef struct {
 	uint24hm_t peer_address;
 	uint8_t peer_channel;
 	uint8_t param_list;
-} hmmsg_config_start_t;
+} hm_frm_config_start_t;
 
 #define HM_FRM_CONFIG_END_IS(frm) ((frm).type == 0x01 && (frm).config_end.subtype == 0x06)
 #define HM_FRM_CONFIG_END_NEW(frm_buf_tgt, frm_dst_addr) \
@@ -92,7 +92,7 @@ typedef struct {
 typedef struct {
 	uint8_t channel;
 	uint8_t subtype;
-} hmmsg_config_end_t;
+} hm_frm_config_end_t;
 
 #define HM_FRM_CONFIG_UNKNOWN_01_IS(frm) ((frm).type == 0x01 && (frm).config_unknown_01.subtype == 0x07)
 #define HM_FRM_CONFIG_UNKNOWN_01_NEW(frm_buf_tgt, frm_dst_addr, data_count) \
@@ -102,18 +102,18 @@ typedef struct {
 	uint8_t channel;
 	uint8_t subtype;
 	uint8_t data[(HM_FRM_PAYLOAD_SIZE - 2) / sizeof(uint8_t)];
-} hmmsg_config_unknown_01_t;
+} hm_frm_config_unknown_01_t;
 
-#define HM_FRM_CONFIG_WRITE_INDEX_IS(frm) ((frm).type == 0x01 && (frm).config_write_pairs.subtype == 0x08)
+#define HM_FRM_CONFIG_WRITE_INDEX_IS(frm) ((frm).type == 0x01 && (frm).config_write_index.subtype == 0x08)
 #define HM_FRM_CONFIG_WRITE_INDEX_GET_COUNT(frm) (((frm).len - 11) / sizeof(hm_parameter_pair_t))
 #define HM_FRM_CONFIG_WRITE_INDEX_NEW(frm_buf_tgt, frm_dst_addr, param_pairs_count) \
 	HM_FRM_NEW((frm_buf_tgt), 11 + (param_pairs_count) * sizeof(hm_parameter_pair_t), ++hm_frm_ctr, 0x01, (frm_dst_addr)); \
-	(frm_buf_tgt).config_write_pairs.subtype = 0x08;
+	(frm_buf_tgt).config_write_index.subtype = 0x08;
 typedef struct {
 	uint8_t channel;
 	uint8_t subtype;
 	hm_parameter_pair_t param_pairs[(HM_FRM_PAYLOAD_SIZE - 2) / sizeof(hm_parameter_pair_t)];
-} hmmsg_config_write_index_t;
+} hm_frm_config_write_index_t;
 
 #define HM_FRM_CONFIG_STATUS_REQ_IS(frm) ((frm).type == 0x01 && (frm).config_status_req.subtype == 0x0e)
 #define HM_FRM_CONFIG_STATUS_REQ_NEW(frm_buf_tgt, frm_dst_addr) \
@@ -122,7 +122,7 @@ typedef struct {
 typedef struct {
 	uint8_t channel;
 	uint8_t subtype;
-} hmmsg_config_status_req_t;
+} hm_frm_config_status_req_t;
 
 
 #define HM_FRM_ACK_NACK_SUBTYPE_ACK 0x00
@@ -140,8 +140,8 @@ typedef struct {
 	uint8_t channel;
 	uint8_t status;
 	uint8_t unknown;
-	uint8_t rssi;
-} hmmsg_ack_nack_t;
+	uint8_t hm_rssi;
+} hm_frm_ack_nack_t;
 
 
 #define HM_FRM_INFO_PEER_LIST_IS(frm) ((frm).type == 0x10 && (frm).info_peer_list.subtype == 0x01)
@@ -152,7 +152,7 @@ typedef struct {
 typedef struct {
 	uint8_t subtype;
 	hm_peer_t peers[4];
-} hmmsg_info_peer_list_t;
+} hm_frm_info_peer_list_t;
 
 #define HM_FRM_INFO_PARAM_RESPONSE_PAIRS_IS(frm) ((frm).type == 0x10 && (frm).info_param_response_pairs.subtype == 0x02)
 #define HM_FRM_INFO_PARAM_RESPONSE_PAIRS_NEW(frm_buf_tgt, frm_ctr, frm_dst_addr, param_pairs_count) \
@@ -161,7 +161,7 @@ typedef struct {
 typedef struct {
 	uint8_t subtype;
 	hm_parameter_pair_t param_pairs[(HM_FRM_PAYLOAD_SIZE - 1) / sizeof(hm_parameter_pair_t)];
-} hmmsg_info_param_response_pairs_t;
+} hm_frm_info_param_response_pairs_t;
 
 #define HM_FRM_INFO_PARAM_RESPONSE_SEQ_IS(frm) ((frm).type == 0x10 && (frm).info_param_response_seq.subtype == 0x03)
 #define HM_FRM_INFO_PARAM_RESPONSE_SEQ_NEW(frm_buf_tgt, frm_ctr, frm_dst_addr, param_count) \
@@ -171,7 +171,7 @@ typedef struct {
 	uint8_t subtype;
 	uint8_t offset;
 	uint8_t params[(HM_FRM_PAYLOAD_SIZE - 2) / sizeof(uint8_t)];
-} hmmsg_info_param_response_seq_t;
+} hm_frm_info_param_response_seq_t;
 
 #define HM_FRM_RESET_IS(frm) ((frm).type == 0x11 && (frm).reset.subtype == 0x04 && (frm).reset.unknown00 == 0x00)
 #define HM_FRM_RESET_NEW(frm_buf_tgt, frm_dst_addr) \
@@ -180,7 +180,7 @@ typedef struct {
 typedef struct {
 	uint8_t subtype;
 	uint8_t unknown00;
-} hmmsg_reset_t;
+} hm_frm_reset_t;
 
 #define HM_FRM_SWITCH_IS(frm) ((frm).type == 0x3e)
 #define HM_FRM_SWITCH_NEW(frm_buf_tgt, frm_dst_addr) \
@@ -190,7 +190,7 @@ typedef struct {
 	uint8_t unknown;
 	uint8_t channel;
 	uint8_t counter;
-} hmmsg_switchfrm_t;
+} hm_frm_switchfrm_t;
 
 #define HM_FRM_REMOTE_IS(frm) ((frm).type == 0x40)
 #define HM_FRM_REMOTE_NEW(frm_buf_tgt, frm_dst_addr) \
@@ -200,7 +200,7 @@ typedef struct {
 	uint8_t long_press:1;
 	uint8_t lowbat:1;
 	uint8_t counter;
-} hmmsg_remote_t;
+} hm_frm_remote_t;
 
 
 typedef struct {
@@ -221,23 +221,23 @@ typedef struct {
 	uint24hm_t addr_dst;
 	union {
 		uint8_t payload_raw[HM_FRM_PAYLOAD_SIZE];
-		hmmsg_ack_nack_t ack_nack;
-		hmmsg_device_info_t device_info;
-		hmmsg_config_peer_add_remove_t config_peer_add_remove;
-		hmmsg_config_peer_list_req_t config_peer_list_req;
-		hmmsg_config_param_req_t config_param_req;
-		hmmsg_config_start_t config_start;
-		hmmsg_config_end_t config_end;
-		hmmsg_config_unknown_01_t config_unknown_01;
-		hmmsg_config_write_index_t config_write_pairs;
-		hmmsg_config_status_req_t config_status_req;
-		hmmsg_info_peer_list_t info_peer_list;
-		hmmsg_info_param_response_pairs_t info_param_response_pairs;
-		hmmsg_info_param_response_seq_t info_param_response_seq;
-		hmmsg_reset_t reset;
-		hmmsg_switchfrm_t switchmsg;
-		hmmsg_remote_t remote;
-		HM_MSG_DEVICE
+		hm_frm_ack_nack_t ack_nack;
+		hm_frm_device_info_t device_info;
+		hm_frm_config_peer_add_remove_t config_peer_add_remove;
+		hm_frm_config_param_req_t config_param_req;
+		hm_frm_config_peer_list_req_t config_peer_list_req;
+		hm_frm_config_start_t config_start;
+		hm_frm_config_end_t config_end;
+		hm_frm_config_unknown_01_t config_unknown_01;
+		hm_frm_config_write_index_t config_write_index;
+		hm_frm_config_status_req_t config_status_req;
+		hm_frm_info_peer_list_t info_peer_list;
+		hm_frm_info_param_response_pairs_t info_param_response_pairs;
+		hm_frm_info_param_response_seq_t info_param_response_seq;
+		hm_frm_reset_t reset;
+		hm_frm_switchfrm_t switchfrm;
+		hm_frm_remote_t remote;
+		HM_FRAMES_DEVICE
 	};
 } __attribute__ ((packed)) hm_frame_t;
 
@@ -245,4 +245,4 @@ typedef struct {
 void hm_system_frm_handler();
 
 
-#endif /* HM_MESSAGES_H_ */
+#endif /* HM_FRAMES_SYSTEM_H_ */

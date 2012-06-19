@@ -11,8 +11,8 @@
 
 
 #define HM_FRM_DIMMER_SET_IS(frm) ((frm).type == 0x10 && (frm).dimmer_set.subtype == 0x02)
-#define HM_FRM_DIMMER_SET_NEW(frm_buf_tgt,frm_dst_addr) \
-	INIT_HM_MSG_TRUNK((frm_buf_tgt), 16, ++hm_msgctr, 0xa011, (frm_dst_addr)); \
+#define HM_FRM_DIMMER_SET_NEW(frm_buf_tgt, frm_dst_addr) \
+	HM_FRM_NEW((frm_buf_tgt), 16, ++hm_frm_ctr, 0x11, (frm_dst_addr)); \
 	(frm_buf_tgt).dimmer_set.subtype = 0x02;
 typedef struct {
 	uint8_t subtype;
@@ -20,12 +20,12 @@ typedef struct {
 	uint8_t level;
 	uint16_t ramp_time;
 	uint16_t on_time;
-} hmmsg_dimmer_level_set_t;
+} hm_frm_dimmer_level_set_t;
 
 
 #define HM_FRM_DIMMER_INFO_LEVEL_IS(frm) ((frm).type == 0x10 && (frm).dimmer_info_level.subtype == 0x06)
 #define HM_FRM_DIMMER_INFO_LEVEL_NEW(frm_buf_tgt, frm_ctr, frm_dst_addr) \
-	HM_FRM_NEW((frm_buf_tgt), 14, (frm_ctr), 0x10, (frm_dst_addr)); \
+	HM_FRM_NEW((frm_buf_tgt), 14, (hm_frm_ctr), 0x10, (frm_dst_addr)); \
 	(frm_buf_tgt).dimmer_info_level.subtype = 0x06;
 typedef struct {
 	uint8_t subtype;
@@ -33,9 +33,9 @@ typedef struct {
 	uint8_t level;
 	uint8_t state_flags;
 //	uint8_t rssi;
-} hmmsg_dimmer_info_level_t;
+} hm_frm_dimmer_info_level_t;
 
-#define HM_MSG_DEVICE hmmsg_dimmer_info_level_t dimmer_info_level; hmmsg_dimmer_level_set_t dimmer_set;
+#define HM_FRAMES_DEVICE hm_frm_dimmer_info_level_t dimmer_info_level; hm_frm_dimmer_level_set_t dimmer_set;
 
 
 #endif /* HM_FRAMES_DIMMER_H_ */

@@ -6,8 +6,8 @@
  */ 
 
 
-#ifndef HM_H_
-#define HM_H_
+#ifndef HM_GENERAL_H_
+#define HM_GENERAL_H_
 
 
 extern uint24hm_t hm_my_addr;
@@ -21,7 +21,7 @@ extern uint8_t hm_frm_in_ack_subtype;
 
 extern hm_frame_t hm_frm_out;
 
-extern bool hm_is_message_from_ccu;
+extern bool hm_is_frame_from_ccu;
 extern bool hm_is_waiting_for_pairing;
 
 extern bool hm_is_in_mode_config;
@@ -36,7 +36,7 @@ void hm_send();
 
 void hm_send_device_info(uint24hm_t addr_dst);
 
-void hm_msg_decryt(hm_frame_t *hm_msg_dec, uint8_t *buffer_enc);
-void hm_msg_encrypt(uint8_t *buffer_enc, hm_frame_t *hm_msg_dec);
+void hm_packet_decryt(hm_frame_t *hm_packet_dec, uint8_t *buffer_enc);
+void hm_packet_encrypt(uint8_t *buffer_enc, hm_frame_t *hm_packet_dec);
 
-#endif /* HM_H_ */
+#endif /* HM_GENERAL_H_ */

@@ -1,5 +1,5 @@
 /*
- * hm.c
+ * hm_general.c
  *
  * Created: 11.06.2012 13:36:29
  *  Author: fstorm
@@ -8,8 +8,8 @@
 #include "hm_main.h"
 
 
-uint8_t packet_enc[MAX_ASKSIN_MSG];
-uint8_t rssi, lqi;
+uint8_t hm_packet_enc[MAX_ASKSIN_MSG];
+uint8_t hm_rssi, hm_lqi;
 
 
 uint24hm_t hm_my_addr;
@@ -21,7 +21,7 @@ uint8_t hm_frm_in_ack_subtype;
 
 hm_frame_t hm_frm_out;
 
-bool hm_is_message_from_ccu;
+bool hm_is_frame_from_ccu;
 bool hm_is_waiting_for_pairing;
 
 bool hm_is_in_mode_config;
@@ -42,11 +42,11 @@ void hm_init()
 
 void hm_task()
 {
-	if (!hm_rf_receive(packet_enc, &rssi, &lqi))
-		return;	// no message received
+	if (!hm_rf_receive(hm_packet_enc, &hm_rssi, &hm_lqi))
+		return;	// no frame received
 		
 	// "decrypt"
-	hm_msg_decryt(&hm_frm_in, packet_enc);
+	hm_packet_decryt(&hm_frm_in, hm_packet_enc);
 	
 	debug_dump((uint8_t*)&hm_frm_in, hm_frm_in.len + 1, "R: ");
 	
@@ -69,9 +69,9 @@ void hm_send()
 	debug_dump((uint8_t*)&hm_frm_out, hm_frm_out.len + 1, "S: ");
 
 	// "crypt"
-	hm_msg_encrypt(packet_enc, &hm_frm_out);
+	hm_packet_encrypt(hm_packet_enc, &hm_frm_out);
 	
-	hm_rf_send_packet(packet_enc);
+	hm_rf_send_packet(hm_packet_enc);
 }
 
 void hm_send_device_info(uint24hm_t addr_dst)
@@ -97,9 +97,9 @@ void hm_send_device_info(uint24hm_t addr_dst)
 
 
 // "decrypt"
-void hm_msg_decryt(hm_frame_t *hm_msg_dec, uint8_t *buffer_enc)
+void hm_packet_decryt(hm_frame_t *hm_packet_dec, uint8_t *buffer_enc)
 {
-	uint8_t *buffer_dec = (uint8_t *)hm_msg_dec;
+	uint8_t *buffer_dec = (uint8_t *)hm_packet_dec;
 	uint8_t l;
 	
 	buffer_dec[0] = buffer_enc[0];
@@ -110,9 +110,9 @@ void hm_msg_decryt(hm_frame_t *hm_msg_dec, uint8_t *buffer_enc)
 }
 
 // "crypt"
-void hm_msg_encrypt(uint8_t *buffer_enc, hm_frame_t *hm_msg_dec)
+void hm_packet_encrypt(uint8_t *buffer_enc, hm_frame_t *hm_packet_dec)
 {
-	uint8_t *buffer_dec = (uint8_t *)hm_msg_dec;
+	uint8_t *buffer_dec = (uint8_t *)hm_packet_dec;
 	uint8_t l;
 	
 	buffer_enc[0] = buffer_dec[0];

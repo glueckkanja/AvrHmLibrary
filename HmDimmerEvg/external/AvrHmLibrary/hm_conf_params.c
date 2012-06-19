@@ -1,5 +1,5 @@
 /*
- * hm_common.c
+ * hm_conf_params.c
  *
  * Created: 14.06.2012 16:19:37
  *  Author: fstorm
@@ -23,7 +23,7 @@ int8_t hm_config_get_param_bank_id(uint8_t channel, uint8_t peer_id, uint8_t par
 	return -1;
 }
 
-void hm_config_write(uint8_t channel, uint8_t peer_id, uint8_t param_list, hm_parameter_pair_t *p_params, uint8_t count, uint24hm_t *p_msg_src_addr)
+void hm_config_write(uint8_t channel, uint8_t peer_id, uint8_t param_list, hm_parameter_pair_t *p_params, uint8_t count, uint24hm_t *p_frm_addr_src)
 {
 	for (uint8_t i = 0; i < count; i++)
 	{
@@ -57,7 +57,7 @@ void hm_config_write(uint8_t channel, uint8_t peer_id, uint8_t param_list, hm_pa
 			switch (p_param_src->value)
 			{
 				case 0x81:
-					hm_peers[0].addr = *p_msg_src_addr;
+					hm_peers[0].addr = *p_frm_addr_src;
 					break;
 				case 0x00:
 					hm_peers[0].addr.value = 0x000000;

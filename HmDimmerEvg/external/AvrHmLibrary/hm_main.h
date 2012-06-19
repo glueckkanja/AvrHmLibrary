@@ -1,13 +1,13 @@
 /*
- * hm_general.h
+ * hm_main.h
  *
  * Created: 14.06.2012 13:12:16
  *  Author: fstorm
  */ 
 
 
-#ifndef HM_GENERAL_H_
-#define HM_GENERAL_H_
+#ifndef HM_MAIN_H_
+#define HM_MAIN_H_
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -36,4 +36,4 @@ typedef struct {uint32_t value:24;} uint24hm_t;
 #include "hm_dimmer.h"
 
 
-#endif /* HM_GENERAL_H_ */
+#endif /* HM_MAIN_H_ */
