@@ -1,11 +1,11 @@
 /*******************************************************************************
-    Filename: cc1100.h
+    Filename: cc1100_defines.h
 
     Copyright 2007 Texas Instruments, Inc.
 *******************************************************************************/
 
-#ifndef CC1100_H
-#define CC1100_H
+#ifndef CC1100_DEFINES_H
+#define CC1100_DEFINES_H
 
 // Configuration Registers
 #define CC1100_IOCFG2           0x00    // GDO2 output pin configuration

@@ -18,7 +18,5 @@ Alpha Version:
 Open Issues:
 
 - ACK/NACK handling
-- separate universally usable code from specific application projekt
-- better handling of some message details
 - optimization
 - and many more...

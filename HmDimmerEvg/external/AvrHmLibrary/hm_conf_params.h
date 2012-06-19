@@ -1,16 +1,13 @@
 /*
- * hm_parameters_peers.h
+ * hm_conf_params.h
  *
  * Created: 14.06.2012 13:18:28
  *  Author: fstorm
  */ 
 
 
-#ifndef HM_PARAMETERS_PEERS_H_
-#define HM_PARAMETERS_PEERS_H_
-
-
-#include "hm_general.h"
+#ifndef HM_CONF_PARAMS_H_
+#define HM_CONF_PARAMS_H_
 
 
 typedef struct hm_parameter_pair {
@@ -43,13 +40,10 @@ typedef struct {
 } hm_param_bank_t;
 
 
-#define HM_PEERS_MAX 1 + 4 // CCU + 4 other devices
-typedef struct {
-	hm_uint24_t addr;
-	uint8_t channel;
-} hm_peer_t;
-extern hm_peer_t hm_peers[HM_PEERS_MAX];
-extern bool hm_is_peers_dirty;
+int8_t hm_config_get_param_bank_id(uint8_t channel, uint8_t peer_id, uint8_t param_list, uint8_t param_index);
+void hm_config_write(uint8_t channel, uint8_t peer_id, uint8_t param_list, hm_parameter_pair_t *p_params, uint8_t count, uint24hm_t *p_msg_src_addr);
+bool hm_config_load();
+void hm_config_store();
 
 
-#endif /* HM_PARAMETERS_PEERS_H_ */
+#endif /* HM_CONF_PARAMS_H_ */

@@ -104,16 +104,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="board.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="cc1100.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="clock.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="clock.h">
+    <Compile Include="board_defines.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="debug.c">
@@ -122,10 +113,64 @@
     <Compile Include="debug.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="device_hm_defines.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="dimmer.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="dimmer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\cc1100_defines.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_conf_params.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_conf_params.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_dimmer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_dimmer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_frames_dimmer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_frames_system.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_frames_system.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_general.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_general.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_main.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_peers.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_peers.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_rf_avr.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_rf_avr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_timer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_timer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="external\pfleury\uart.c">
@@ -134,36 +179,13 @@
     <Compile Include="external\pfleury\uart.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="hm.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="hm.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="hm_common.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="hm_general.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="hm_messages.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="hm_parameters_peers.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="HmDimmerEvg.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="rf.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="rf.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="external\" />
+    <Folder Include="external\AvrHmLibrary\" />
     <Folder Include="external\pfleury" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />

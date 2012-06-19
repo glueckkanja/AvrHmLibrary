@@ -5,7 +5,7 @@
  *  Author: fstorm
  */ 
 
-#include "board.h"
+#include "board_defines.h"
 #include "debug.h"
 #include "dimmer.h"
 #include <avr/sfr_defs.h>

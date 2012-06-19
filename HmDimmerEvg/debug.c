@@ -6,7 +6,7 @@
  */ 
 
 #include "debug.h"
-#include "clock.h"
+#include "external/AvrHmLibrary/hm_main.h"
 
 #include <util/atomic.h>
 #include <util/delay.h>
@@ -20,7 +20,10 @@ void debug_dump(uint8_t *p_buffer, uint16_t len, const char *prefix)
 		
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		sprintf(uart_out, "%df%02d0: ", secs, ticks_10ms);
+		uint16_t timer_ms = (uint16_t)hm_timer_ticks * HM_TIMER_MS_PER_TICKS;
+		uint8_t timer_secs = hm_timer_secs + timer_ms / 1000;
+		timer_ms = timer_ms % 1000;
+		sprintf(uart_out, "%03df%03d: ", timer_secs, timer_ms);
 	}
 	uart_puts(uart_out);		
 

@@ -6,17 +6,15 @@
  */ 
 
 
-#include "board.h"
+#include "board_defines.h"
 
 #include <avr/power.h>
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "clock.h"
 #include "dimmer.h"
-#include "hm.h"
-#include "hm_general.h"
+#include "external/AvrHmLibrary/hm_main.h"
 
 #include "debug.h"
 
@@ -36,7 +34,7 @@ int main(void)
 	uart_init(UART_BAUD_SELECT_DOUBLE_SPEED(9600, F_CPU));
 	//#endif
 
-	clock_init();
+	hm_timer_init();
 	
 	dimmer_init();
 	//while(1)
@@ -63,6 +61,6 @@ int main(void)
 		dimmer_check_keys();
 		
 		if (uart_getc() != UART_NO_DATA)
-			hm_send_device_info(HM_UINT24_FROM_UINT32(0x000000));
+			hm_send_device_info((uint24hm_t){ 0x000000 });
     }
 }

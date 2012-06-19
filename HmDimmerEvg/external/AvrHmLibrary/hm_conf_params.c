@@ -5,74 +5,10 @@
  *  Author: fstorm
  */ 
 
+#include "hm_main.h"
+
 #include <avr/eeprom.h>
 
-#include "hm_general.h"
-#include "hm_parameters_peers.h"
-#include "hm_messages.h"
-#include "hm.h"
-
-
-hm_peer_t hm_peers[HM_PEERS_MAX];
-bool hm_is_peers_dirty;
-
-bool hm_is_message_from_ccu;
-bool hm_is_waiting_for_pairing;
-
-bool hm_is_in_mode_config;
-uint8_t hm_mode_config_channel;
-int8_t hm_mode_config_peer_id;
-uint8_t hm_mode_config_param_list;
-
-
-bool hm_init_peering(hm_uint24_t *p_peer_addr, uint8_t peer_channel)
-{
-	for (uint8_t id = 1; id < HM_PEERS_MAX; id++)
-	{
-		hm_peer_t *p_peer = &hm_peers[id];
-		if (ISEQUAL_HM_UINT24_TO_UINT32(p_peer->addr, 0x000000))
-		{
-			p_peer->addr = *p_peer_addr;
-			p_peer->channel = peer_channel;
-			hm_peering_reset(id);
-			
-			hm_is_peers_dirty = true;
-			hm_config_store();
-
-			return true;
-		}
-	}
-	return false;
-}
-
-bool hm_remove_peering(hm_uint24_t *p_peer_addr, uint8_t peer_channel)
-{
-	int8_t peer_id = hm_get_peer_id_by_addr_channel(p_peer_addr, peer_channel);
-	if (peer_id == -1)
-		return false;
-		
-	hm_peers[peer_id].addr = HM_UINT24_FROM_UINT32(0x000000);
-	hm_peers[peer_id].channel = 0x00;
-	hm_is_peers_dirty = true;
-	hm_config_store();
-	
-	return true;
-}
-	
-int8_t hm_get_peer_id_by_addr_channel(hm_uint24_t *p_peer_addr, uint8_t peer_channel)
-{
-	if (ISEQUAL_HM_UINT24_TO_UINT32(*p_peer_addr, 0x000000))
-		return 0;	// my own local config p_params
-		
-	for (uint8_t id = 1; id < HM_PEERS_MAX; id++)
-	{
-		hm_peer_t *p_peer = &hm_peers[id];
-		if (ISEQUAL_HM_UINT24_TO_HM_UINT24(p_peer->addr, *p_peer_addr) && p_peer->channel == peer_channel)
-			return id;
-	}
-	
-	return -1;
-}
 
 int8_t hm_config_get_param_bank_id(uint8_t channel, uint8_t peer_id, uint8_t param_list, uint8_t param_index)
 {
@@ -81,13 +17,13 @@ int8_t hm_config_get_param_bank_id(uint8_t channel, uint8_t peer_id, uint8_t par
 		hm_param_bank_t *p_bank = &hm_config_param_banks[id];
 		if (p_bank->channel == channel && p_bank->peer_id == peer_id && p_bank->param_list == param_list &&
 			(p_bank->is_sequence == false || (p_bank->param_bank_seq.offset <= param_index &&
-				param_index < p_bank->param_bank_seq.offset + p_bank->param_bank_seq.param_count)))
-			return id;
+			param_index < p_bank->param_bank_seq.offset + p_bank->param_bank_seq.param_count)))
+		return id;
 	}
 	return -1;
 }
 
-void hm_config_write(uint8_t channel, uint8_t peer_id, uint8_t param_list, hm_parameter_pair_t *p_params, uint8_t count, hm_uint24_t *p_msg_src_addr)
+void hm_config_write(uint8_t channel, uint8_t peer_id, uint8_t param_list, hm_parameter_pair_t *p_params, uint8_t count, uint24hm_t *p_msg_src_addr)
 {
 	for (uint8_t i = 0; i < count; i++)
 	{
@@ -124,11 +60,11 @@ void hm_config_write(uint8_t channel, uint8_t peer_id, uint8_t param_list, hm_pa
 					hm_peers[0].addr = *p_msg_src_addr;
 					break;
 				case 0x00:
-					hm_peers[0].addr = HM_UINT24_FROM_UINT32(0x000000);
+					hm_peers[0].addr.value = 0x000000;
 					hm_is_waiting_for_pairing = true;	// for CONFIG_END to succeed
 					break;
 			}
-			hm_is_peers_dirty = true;
+			hm_peers_is_dirty = true;
 		}
 
 		hm_config_store();
@@ -157,7 +93,7 @@ bool hm_config_load()
 	}
 	
 	eeprom_read_block(&hm_peers[0], HM_PEERS_EEPROM_LOC, sizeof(hm_peers));
-	hm_is_peers_dirty = false;
+	hm_peers_is_dirty = false;
 	
 	return true;
 }
@@ -179,9 +115,9 @@ void hm_config_store()
 		}
 	}
 	
-	if(hm_is_peers_dirty)
+	if(hm_peers_is_dirty)
 	{
 		eeprom_update_block(&hm_peers[0], HM_PEERS_EEPROM_LOC, sizeof(hm_peers));
-		hm_is_peers_dirty = false;
+		hm_peers_is_dirty = false;
 	}
 }
