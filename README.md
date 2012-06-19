@@ -18,5 +18,6 @@ Alpha Version:
 Open Issues:
 
 - ACK/NACK handling
-- optimization
+- peers/parameter handling
+- optimizations
 - and many more...
