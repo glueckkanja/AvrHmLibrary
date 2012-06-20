@@ -32,17 +32,22 @@
 #define CC1100_ISC		ISC00
 #define CC1100_EICR		EICRA
 
-#define LED_PORT		PORTA
-#define LED_DDR			DDRA
-#define LED_BIT			1
-#define LED_ON_PORT		PORTA
-#define LED_ON_DDR		DDRA
-#define LED_ON_BIT		0
+#define LED0_INIT()		LED0_OFF(); DDRA  |= _BV(0);
+#define LED0_ON()		PORTA |= _BV(0)
+#define LED0_OFF()		PORTA &= ~_BV(0)
+#define LED0_TOGGLE()	PORTA ^= _BV(0)
 
-#define LED_INIT()   LED_DDR  |= _BV(LED_BIT)
-#define LED_TOGGLE() LED_PORT ^= _BV(LED_BIT)
-#define LED_ON()     LED_PORT |= _BV(LED_BIT)
-#define LED_OFF( )   LED_PORT &= ~_BV(LED_BIT)
+#define LED1_INIT()		LED1_OFF(); DDRA  |= _BV(1);
+#define LED1_ON()		PORTA |= _BV(1)
+#define LED1_OFF()		PORTA &= ~_BV(1)
+#define LED1_TOGGLE()	PORTA ^= _BV(1)
+
+#define B1_INIT()		PORTA &= ~_BV(4); PORTA &= ~_BV(4);
+#define B1_STATE		(PINA & _BV(4))
+#define B2_INIT()		PORTB &= ~_BV(2); PORTB &= ~_BV(2);
+#define B2_STATE		(PINB & _BV(2))
+#define B3_INIT()		PORTD &= ~_BV(3); PORTD &= ~_BV(3);
+#define B3_STATE		(PIND & _BV(3))
 
 #define DIM_REL_PORT	PORTB
 #define DIM_REL_DDR		DDRB
@@ -54,20 +59,7 @@
 //#define DIM_PWM_DDR		DDRB
 //#define DIM_PWM_BIT		3
 
-#define DIM_T1_PORT		PORTA
-#define DIM_T1_DDR		DDRA
-#define DIM_T1_PIN		PINA
-#define DIM_T1_BIT		4
-#define DIM_T2_PORT		PORTB
-#define DIM_T2_DDR		DDRB
-#define DIM_T2_PIN		PINB
-#define DIM_T2_BIT		2
-#define DIM_T3_PORT		PORTD
-#define DIM_T3_DDR		DDRD
-#define DIM_T3_PIN		PIND
-#define DIM_T3_BIT		3
-
-#define HM_TIMER_INIT \
+#define HM_TIMER_INIT() \
 	OCR0A = 195;						/* ~ 40 Hz => 25 ms	*/	\
 	TCCR0B = _BV(CS02) | _BV(CS00);		/* prescaler 1024	*/	\
 	TCCR0A = _BV(WGM01);				/* CTC				*/	\
@@ -75,6 +67,7 @@
 #define HM_TIMER_ISR_VECT TIMER0_COMPA_vect
 
 #define HM_TIMER_MS_PER_TICKS	25
-#define HM_TIMER_MAX			120		// ~ 3 secs per round
+#define HM_TIMER_TICKS_MAX		120		// ~ 3 secs per round
+#define HM_TIMER_SECS_MAX		120
 
 #endif

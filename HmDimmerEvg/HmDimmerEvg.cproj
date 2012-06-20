@@ -107,6 +107,12 @@
     <Compile Include="board_defines.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="buttons_leds.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="buttons_leds.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="debug.c">
       <SubType>compile</SubType>
     </Compile>
@@ -123,6 +129,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="external\AvrHmLibrary\cc1100_defines.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_buttons.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="external\AvrHmLibrary\hm_buttons.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="external\AvrHmLibrary\hm_conf_params.c">

@@ -83,7 +83,7 @@ void hm_peering_reset(uint8_t peer_id)
 	hm_config_param_banks[pb_id++].is_dirty = true;
 }
 	
-void hm_dimmer_frm_handler()
+void hm_dimmer_frame_handler()
 {
 	if (HM_FRM_DIMMER_SET_IS(hm_frm_in))
 	{
@@ -168,6 +168,4 @@ void hm_pair_remote(uint24hm_t *p_dst)
 {
 	hm_pair_remote_onechannel(p_dst, 2);
 	hm_pair_remote_onechannel(p_dst, 1);
-
-	hm_is_waiting_for_pairing = false;
 }

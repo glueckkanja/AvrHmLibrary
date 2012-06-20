@@ -21,7 +21,9 @@ extern uint8_t hm_frm_in_ack_subtype;
 
 extern hm_frame_t hm_frm_out;
 
-extern bool hm_is_frame_from_ccu;
+extern volatile bool hm_do_reset;
+
+extern volatile bool hm_do_start_pairing;
 extern bool hm_is_waiting_for_pairing;
 
 extern bool hm_is_in_mode_config;
@@ -29,11 +31,15 @@ extern uint8_t hm_mode_config_channel;
 extern int8_t hm_mode_config_peer_id;
 extern uint8_t hm_mode_config_param_list;
 
+extern bool hm_is_frame_from_ccu;
+
 
 void hm_init();
 void hm_task();
 void hm_send();
 
+void hm_pairing_process_start(bool send_device_info);
+void hm_pairing_process_end();
 void hm_send_device_info(uint24hm_t addr_dst);
 
 void hm_packet_decryt(hm_frame_t *hm_packet_dec, uint8_t *buffer_enc);

@@ -33,6 +33,8 @@ typedef struct {uint32_t value:24;} uint24hm_t;
 #include "hm_frames_dimmer.h"
 #include "hm_frames_system.h"
 #include "hm_general.h"
+#include "hm_timer.h"
+#include "hm_buttons.h"
 #include "hm_dimmer.h"
 
 

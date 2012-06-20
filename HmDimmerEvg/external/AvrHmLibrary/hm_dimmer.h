@@ -10,6 +10,8 @@
 #define HM_DIMMER_H_
 
 
+#include <avr/pgmspace.h>
+
 
 extern hm_param_bank_t hm_config_param_banks[18];
 #define HM_PEERS_EEPROM_LOC (void *)(0x0014 + 13 * 16)
@@ -17,7 +19,7 @@ extern hm_param_bank_t hm_config_param_banks[18];
 
 void hm_config_reset();
 void hm_peering_reset(uint8_t peer_id);
-void hm_dimmer_frm_handler();
+void hm_dimmer_frame_handler();
 void hm_pair_remote(uint24hm_t *p_dst);
 
 

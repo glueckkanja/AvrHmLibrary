@@ -10,7 +10,7 @@
 #include <util/delay.h>
 
 
-void hm_system_frm_handler()
+void hm_system_frame_handler()
 {
 	hm_frm_in_ack_subtype = HM_REPLY_NONE;
 	
@@ -24,7 +24,8 @@ void hm_system_frm_handler()
 		_delay_ms(300);
 
 		hm_pair_remote(&hm_frm_in.addr_src);
-		
+		hm_pairing_process_end();
+
 		return;
 	}
 
@@ -62,7 +63,8 @@ void hm_system_frm_handler()
 		_delay_ms(300);
 		
 		hm_pair_remote(&hm_frm_in.addr_src);
-
+		hm_pairing_process_end();
+		
 		return;
 	}
 	
@@ -97,7 +99,7 @@ void hm_system_frm_handler()
 		}
 		else if (HM_FRM_CONFIG_END_IS(hm_frm_in) && hm_frm_in.config_end.channel == hm_mode_config_channel)
 		{
-			hm_is_waiting_for_pairing = false;
+			hm_pairing_process_end();
 			hm_is_in_mode_config = false;
 			
 			return;
@@ -105,7 +107,11 @@ void hm_system_frm_handler()
 	}
 	
 	// for now, leave pairing/config mode if anything else comes in for us
-	hm_is_waiting_for_pairing = false;
+	if (hm_is_waiting_for_pairing)
+	{
+		hm_pairing_process_end();
+	}
+	
 	hm_is_in_mode_config = false;
 	
 	if (hm_is_frame_from_ccu && HM_FRM_CONFIG_PARAM_REQ_IS(hm_frm_in))
@@ -190,7 +196,7 @@ void hm_system_frm_handler()
 		return;
 	}
 
-	HM_DEV_FRM_HANDLER;			
+	HM_DEV_FRAME_HANDLER();			
 
 	return;
 }

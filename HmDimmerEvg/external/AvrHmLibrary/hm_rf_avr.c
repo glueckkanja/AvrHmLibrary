@@ -44,7 +44,7 @@ const uint8_t PROGMEM ASKSIN_CFG[50] = {
 };
 
 
-static inline void hm_spi_init()
+static inline __attribute__((always_inline)) void hm_spi_init()
 {
 	PRR &= ~_BV(PRSPI);
 	SPI_PORT |= _BV(SPI_SCLK);
@@ -55,14 +55,14 @@ static inline void hm_spi_init()
 	SPSR |= _BV(SPI2X);
 }
 
-static inline uint8_t hm_cc1100_send_byte(uint8_t data)
+static inline __attribute__((always_inline)) uint8_t hm_cc1100_send_byte(uint8_t data)
 {
 	SPDR = data;						// send byte
 	loop_until_bit_is_set(SPSR, SPIF);	// wait until transfer finished
 	return SPDR;
 }
 
-static inline uint8_t hm_cc1100_read_reg(uint8_t addr)
+static inline __attribute__((always_inline)) uint8_t hm_cc1100_read_reg(uint8_t addr)
 {
 	HM_CC1100_CS_ON;
 	hm_cc1100_send_byte(addr | CC1100_READ_BURST);
@@ -72,7 +72,7 @@ static inline uint8_t hm_cc1100_read_reg(uint8_t addr)
 	return ret;
 }
 
-static inline void hm_cc1100_write_reg(uint8_t addr, uint8_t data)
+static inline __attribute__((always_inline)) void hm_cc1100_write_reg(uint8_t addr, uint8_t data)
 {
 	HM_CC1100_CS_ON;
 	hm_cc1100_send_byte(addr | CC1100_WRITE_BURST);
@@ -80,7 +80,7 @@ static inline void hm_cc1100_write_reg(uint8_t addr, uint8_t data)
 	HM_CC1100_CS_OFF;
 }
 
-static inline uint8_t hm_cc1100_send_strobe(uint8_t strobe)
+static inline __attribute__((always_inline)) uint8_t hm_cc1100_send_strobe(uint8_t strobe)
 {
 	HM_CC1100_CS_ON;
 	uint8_t ret = hm_cc1100_send_byte(strobe);
@@ -89,7 +89,7 @@ static inline uint8_t hm_cc1100_send_strobe(uint8_t strobe)
 	return ret;
 }
 
-static inline void hm_cc1100_receive_mode(void)
+static inline __attribute__((always_inline)) void hm_cc1100_receive_mode(void)
 {
 	uint8_t cnt = 0xff;
 	while(cnt-- && (hm_cc1100_send_strobe(CC1100_SRX) & 0x70) != 1)

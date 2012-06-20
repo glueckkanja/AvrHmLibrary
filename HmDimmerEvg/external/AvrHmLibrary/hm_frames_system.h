@@ -242,7 +242,7 @@ typedef struct {
 } __attribute__ ((packed)) hm_frame_t;
 
 
-void hm_system_frm_handler();
+void hm_system_frame_handler();
 
 
 #endif /* HM_FRAMES_SYSTEM_H_ */

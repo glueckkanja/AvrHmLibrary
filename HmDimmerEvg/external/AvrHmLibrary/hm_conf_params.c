@@ -120,4 +120,6 @@ void hm_config_store()
 		eeprom_update_block(&hm_peers[0], HM_PEERS_EEPROM_LOC, sizeof(hm_peers));
 		hm_peers_is_dirty = false;
 	}
+	
+	eeprom_busy_wait();
 }
