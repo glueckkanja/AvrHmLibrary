@@ -10,7 +10,7 @@
 #define HM_TIMER_H_
 
 
-#define HM_TIMER_TICKS_FROM_MS(ms) ((ms) / HM_TIMER_MS_PER_TICKS)
+#define HM_TIMER_TICKS_FROM_MS(ms) ((ms) / HM_TIMER_MS_PER_TICK)
 
 
 extern volatile uint8_t hm_timer_ticks;

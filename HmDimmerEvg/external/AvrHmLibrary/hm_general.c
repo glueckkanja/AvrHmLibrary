@@ -24,6 +24,7 @@ hm_frame_t hm_frm_out;
 volatile bool hm_do_reset;
 
 volatile bool hm_do_start_pairing;
+volatile bool hm_do_stop_pairing;
 bool hm_is_waiting_for_pairing;
 uint8_t hm_waiting_for_pairing_start_secs;
 
@@ -70,8 +71,10 @@ void hm_task()
 		hm_do_start_pairing = false;
 		hm_pairing_process_start(true);
 	}
-	if (hm_is_waiting_for_pairing && hm_timer_is_expired_secs(hm_waiting_for_pairing_start_secs, 20))
+	if (hm_do_stop_pairing ||
+		(hm_is_waiting_for_pairing && hm_timer_is_expired_secs(hm_waiting_for_pairing_start_secs, 20)))
 	{
+		hm_do_stop_pairing = false;
 		hm_pairing_process_end();
 	}
 

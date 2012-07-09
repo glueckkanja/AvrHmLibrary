@@ -8,11 +8,9 @@
 
 #include "board_defines.h"
 
-#include <avr/power.h>
 #include <avr/interrupt.h>
-#include <avr/io.h>
+#include <avr/power.h>
 #include <avr/wdt.h>
-#include <util/delay.h>
 
 #include "dimmer.h"
 #include "external/AvrHmLibrary/hm_main.h"
@@ -27,7 +25,7 @@ int main(void)
 	
 	clock_prescale_set(clock_div_1);
 	
-	uart_init(UART_BAUD_SELECT_DOUBLE_SPEED(9600, F_CPU));
+	uart_init(UART_BAUD_SELECT_DOUBLE_SPEED(57600, F_CPU));
 
 	buttons_leds_init();
 	dimmer_init();
@@ -39,3 +37,4 @@ int main(void)
 		hm_task();
     }
 }
+	

@@ -17,7 +17,7 @@ void debug_print_time()
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		uint16_t timer_ms = (uint16_t)hm_timer_ticks * HM_TIMER_MS_PER_TICKS;
+		uint16_t timer_ms = (uint16_t)hm_timer_ticks * HM_TIMER_MS_PER_TICK;
 		uint8_t timer_secs = hm_timer_secs + timer_ms / 1000;
 		timer_ms = timer_ms % 1000;
 		sprintf(uart_out, "%03df%03d: ", timer_secs, timer_ms);
@@ -46,7 +46,7 @@ void debug_dump(uint8_t *p_buffer, uint16_t len, const char *prefix)
 	uart_puts_P("\r\n");
 }
 
-void debug_dump_integer(int8_t value)
+void debug_dump_integer(uint8_t value)
 {
 	debug_print_time();
 	
@@ -54,16 +54,33 @@ void debug_dump_integer(int8_t value)
 	uart_puts(uart_out);
 }
 
-void blink_led(uint8_t count)
+void debug_dump_integer_raw(uint8_t value)
 {
-	LED1_OFF();
+	sprintf(uart_out, "%03d ", value);
+	uart_puts(uart_out);
+}
+
+void debug_blink_led(uint8_t count)
+{
+	LED_OFF();
 	_delay_ms(500);
 	while (count--)
 	{
-		LED1_ON();
+		LED_ON();
 		_delay_ms(200);
-		LED1_OFF();
+		LED_OFF();
 		_delay_ms(200);
 	}
 	_delay_ms(500);
+}
+
+void debug_blink_led_burst()
+{
+	LED_OFF(); _delay_ms(200);
+	LED_TOGGLE(); _delay_ms(50);
+	LED_TOGGLE(); _delay_ms(50);
+	LED_TOGGLE(); _delay_ms(50);
+	LED_TOGGLE(); _delay_ms(50);
+	LED_TOGGLE(); _delay_ms(50);
+	LED_OFF(); _delay_ms(200);
 }

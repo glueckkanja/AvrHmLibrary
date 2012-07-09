@@ -93,7 +93,7 @@ void hm_system_frame_handler()
 		if (HM_FRM_CONFIG_WRITE_INDEX_IS(hm_frm_in) && hm_frm_in.config_write_index.channel == hm_mode_config_channel)
 		{
 			hm_config_write(hm_mode_config_channel, hm_mode_config_peer_id, hm_mode_config_param_list, 
-				hm_frm_in.config_write_index.param_pairs,  HM_FRM_CONFIG_WRITE_INDEX_GET_COUNT(hm_frm_in), &hm_frm_in.addr_src);
+				hm_frm_in.config_write_index.param_pairs, HM_FRM_CONFIG_WRITE_INDEX_GET_COUNT(hm_frm_in), &hm_frm_in.addr_src);
 			
 			return;
 		}

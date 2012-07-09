@@ -8,6 +8,7 @@
 #define BUTTONS_LEDS_H_
 
 
+#include "external/AvrHmLibrary/hm_buttons.h"
 #include "dimmer.h"
 
 
@@ -18,8 +19,7 @@ typedef enum {
 	led_blink_fast
 } led_state_t;
 
-extern volatile led_state_t led1_state;
-extern volatile uint8_t led1_count_down;
+extern volatile led_state_t led_state;
 
 void buttons_leds_init();
 void buttons_leds_timer();
@@ -31,23 +31,41 @@ void b3_long_end();
 void reset_device();
 
 
-static inline __attribute__((always_inline)) void button0_short()
-{
-	dimmer_set(0);
-}
 static inline __attribute__((always_inline)) void button1_short()
 {
 	dimmer_set(100);
-}
-
-static inline __attribute__((always_inline)) void button0_long()
-{
-	dimmer_change_ms(0, 250);
 }
 static inline __attribute__((always_inline)) void button1_long()
 {
 	dimmer_change_ms(1, 250);
 }
 
+static inline __attribute__((always_inline)) void button2_short()
+{
+	dimmer_set(0);
+}
+static inline __attribute__((always_inline)) void button2_long()
+{
+	dimmer_change_ms(0, 250);
+}
 
+static inline __attribute__((always_inline)) void gira_event(hm_button_signal_type_t signal_type, hm_button_gira_nebenstelle_state_t button)
+{
+	if (signal_type == short_click)
+	{
+		if (button == upper)
+			dimmer_set(100);
+		else if (button == lower)
+			dimmer_set(0);
+		else if (button == both)
+			dimmer_toggle();
+	}
+	else if (signal_type == long_press_start || signal_type == long_press_repeat)
+	{
+		if (button == upper)
+			dimmer_change_ms(1, 250);
+		else if (button == lower)
+			dimmer_change_ms(0, 250);
+	}			
+}
 #endif /* BUTTONS_LEDS_H_ */

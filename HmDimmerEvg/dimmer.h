@@ -21,8 +21,13 @@ static inline __attribute__((always_inline)) void dimmer_change_ms(bool is_up, i
 	
 	if (is_up)
 		dimmer_set(dim_level_percent + delta);
-	else
+	else if (dim_level_percent > delta)	// prevent switching off when dimming
 		dimmer_set(dim_level_percent - delta);
+}
+
+static inline __attribute__((always_inline)) void dimmer_toggle()
+{
+	dimmer_set(dim_level_percent ? 0 : 100);
 }
 
 

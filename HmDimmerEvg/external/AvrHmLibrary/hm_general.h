@@ -24,6 +24,7 @@ extern hm_frame_t hm_frm_out;
 extern volatile bool hm_do_reset;
 
 extern volatile bool hm_do_start_pairing;
+extern volatile bool hm_do_stop_pairing;
 extern bool hm_is_waiting_for_pairing;
 
 extern bool hm_is_in_mode_config;
