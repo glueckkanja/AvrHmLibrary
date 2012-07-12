@@ -6,7 +6,7 @@
  */ 
 
 #include "debug.h"
-#include "external/AvrHmLibrary/hm_main.h"
+#include <hm_main.h>
 
 #include <util/atomic.h>
 #include <util/delay.h>

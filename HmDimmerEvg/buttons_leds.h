@@ -8,7 +8,7 @@
 #define BUTTONS_LEDS_H_
 
 
-#include "external/AvrHmLibrary/hm_buttons.h"
+#include <hm_buttons.h>
 #include "dimmer.h"
 
 

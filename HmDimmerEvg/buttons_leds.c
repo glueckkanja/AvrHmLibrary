@@ -9,7 +9,7 @@
 #include <avr/wdt.h>
 #include <util/delay.h>
 
-#include "external/AvrHmLibrary/hm_main.h"
+#include <hm_main.h>
 #include "buttons_leds.h"
 
 

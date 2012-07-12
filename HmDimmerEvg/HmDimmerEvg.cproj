@@ -61,6 +61,12 @@
   <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
   <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
   <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>..</Value>
+      <Value>../../AvrHmLibrary</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
   <avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</avrgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
   <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
@@ -90,6 +96,12 @@
       <Value>DEBUG</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>..</Value>
+      <Value>../../AvrHmLibrary</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
   <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
   <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
@@ -104,6 +116,82 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\AvrHmLibrary\cc1100_defines.h">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\cc1100_defines.h</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_buttons.c">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_buttons.c</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_buttons.h">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_buttons.h</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_conf_params.c">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_conf_params.c</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_conf_params.h">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_conf_params.h</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_dimmer.c">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_dimmer.c</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_dimmer.h">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_dimmer.h</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_frames_dimmer.h">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_frames_dimmer.h</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_frames_system.c">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_frames_system.c</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_frames_system.h">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_frames_system.h</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_general.c">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_general.c</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_general.h">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_general.h</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_main.h">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_main.h</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_peers.c">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_peers.c</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_peers.h">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_peers.h</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_rf_avr.c">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_rf_avr.c</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_rf_avr.h">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_rf_avr.h</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_timer.c">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_timer.c</Link>
+    </Compile>
+    <Compile Include="..\AvrHmLibrary\hm_timer.h">
+      <SubType>compile</SubType>
+      <Link>external\AvrHmLibrary\hm_timer.h</Link>
+    </Compile>
     <Compile Include="board_defines.h">
       <SubType>compile</SubType>
     </Compile>
@@ -126,63 +214,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="dimmer.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\cc1100_defines.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_buttons.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_buttons.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_conf_params.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_conf_params.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_dimmer.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_dimmer.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_frames_dimmer.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_frames_system.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_frames_system.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_general.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_general.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_main.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_peers.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_peers.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_rf_avr.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_rf_avr.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_timer.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="external\AvrHmLibrary\hm_timer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="external\pfleury\uart.c">

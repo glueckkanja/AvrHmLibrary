@@ -13,7 +13,7 @@
 #include <avr/wdt.h>
 
 #include "dimmer.h"
-#include "external/AvrHmLibrary/hm_main.h"
+#include <hm_main.h>
 
 #include "debug.h"
 

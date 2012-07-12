@@ -13,8 +13,10 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include "../../board_defines.h"
-#include "../../device_hm_defines.h"
+// make sure both AvrHmLibrary and "real" project directory are added as include directory (-I)
+// project directory needs to contain these two files to configure AvrHmLibrary:
+#include <board_defines.h>
+#include <device_hm_defines.h>
 
 
 #include "hm_timer.h"

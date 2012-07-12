@@ -84,7 +84,7 @@ void hm_task()
 	// "decrypt"
 	hm_packet_decryt(&hm_frm_in, hm_packet_enc);
 	
-	debug_dump((uint8_t*)&hm_frm_in, hm_frm_in.len + 1, "R: ");
+	//debug_dump((uint8_t*)&hm_frm_in, hm_frm_in.len + 1, "R: ");
 	
 	
 	hm_system_frame_handler();
@@ -102,7 +102,7 @@ void hm_task()
 
 void hm_send()
 {
-	debug_dump((uint8_t*)&hm_frm_out, hm_frm_out.len + 1, "S: ");
+	//debug_dump((uint8_t*)&hm_frm_out, hm_frm_out.len + 1, "S: ");
 
 	// "crypt"
 	hm_packet_encrypt(hm_packet_enc, &hm_frm_out);
