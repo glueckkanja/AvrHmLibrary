@@ -5,7 +5,7 @@
  *  Author: fstorm
  */ 
 
-#include "board_defines.h"
+#include "hm_defines_hardware.h"
 #include <avr/wdt.h>
 #include <util/delay.h>
 

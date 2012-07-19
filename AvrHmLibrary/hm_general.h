@@ -10,9 +10,12 @@
 #define HM_GENERAL_H_
 
 
-extern uint24hm_t hm_my_addr;
+#include <avr/eeprom.h>
 
-extern uint8_t hm_frm_ctr;
+
+extern uint24hm_t my_addr;
+
+extern uint8_t hm_frm_cnt;
 
 extern hm_frame_t hm_frm_in;
 #define HM_REPLY_IN_FRM_OUT 0xfe
@@ -29,7 +32,7 @@ extern bool hm_is_waiting_for_pairing;
 
 extern bool hm_is_in_mode_config;
 extern uint8_t hm_mode_config_channel;
-extern int8_t hm_mode_config_peer_id;
+extern uint8_t hm_mode_config_peering_id;
 extern uint8_t hm_mode_config_param_list;
 
 extern bool hm_is_frame_from_ccu;

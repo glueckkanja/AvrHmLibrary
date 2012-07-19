@@ -36,17 +36,17 @@ static inline __attribute__((always_inline)) void hm_button_task_debounce(
 	bool detect_long_repeat_end = long_press_repeat_timeout_ms;
 
 	// ignore button state while counter debounce ignore is running
-	if (btn_state_now != buffer->btn_state_last && buffer->btn_ctr_smoothing == 0)
+	if (btn_state_now != buffer->btn_state_last && buffer->btn_cnt_smoothing == 0)
 	{
 		// start counter debounce ignore
-		buffer->btn_ctr_smoothing = HM_TIMER_TICKS_FROM_MS(debounce_timeout_ms);
+		buffer->btn_cnt_smoothing = HM_TIMER_TICKS_FROM_MS(debounce_timeout_ms);
 			
 		// button pressed
 		if (btn_state_now)
 		{
 			if (detect_long_press)
 				// start counter long
-				buffer->btn_ctr_long = HM_TIMER_TICKS_FROM_MS(long_press_timeout_ms) + 1;
+				buffer->btn_cnt_long = HM_TIMER_TICKS_FROM_MS(long_press_timeout_ms) + 1;
 			if (signal_button_down)
 				// signal button down
 				signal_button_down();
@@ -54,19 +54,19 @@ static inline __attribute__((always_inline)) void hm_button_task_debounce(
 		else if (detect_long_press)
 		{
 			// if counter long is still running -> it was a short click
-			if (buffer->btn_ctr_long)
+			if (buffer->btn_cnt_long)
 			{
 				if (signal_short_click)
 					signal_short_click();
 			}
 			// if counter repeat is already running -> we might be interested in the end of the long press
-			if (detect_long_repeat_end && buffer->btn_ctr_long_rpt)
+			if (detect_long_repeat_end && buffer->btn_cnt_long_rpt)
 			{
 				if (signal_long_press_end)
 					signal_long_press_end();
 			}
 			// reset both
-			buffer->btn_ctr_long = buffer->btn_ctr_long_rpt = 0;
+			buffer->btn_cnt_long = buffer->btn_cnt_long_rpt = 0;
 		}
 		
 		// save button state
@@ -74,29 +74,29 @@ static inline __attribute__((always_inline)) void hm_button_task_debounce(
 	}
 	
 	// if counter long is elapsed, start counter long repeat and signal long press (start)
-	if (detect_long_press && buffer->btn_ctr_long == 1)
+	if (detect_long_press && buffer->btn_cnt_long == 1)
 	{
 		if (detect_long_repeat_end)
-			buffer->btn_ctr_long_rpt = HM_TIMER_TICKS_FROM_MS(long_press_repeat_timeout_ms) + 1;
+			buffer->btn_cnt_long_rpt = HM_TIMER_TICKS_FROM_MS(long_press_repeat_timeout_ms) + 1;
 		if (signal_long_press_start)
 			signal_long_press_start();
 	}
 	
 	// if counter long repeat is elapsed, restart and signal long repeat
-	if (detect_long_repeat_end && buffer->btn_ctr_long_rpt == 1)
+	if (detect_long_repeat_end && buffer->btn_cnt_long_rpt == 1)
 	{
-		buffer->btn_ctr_long_rpt = HM_TIMER_TICKS_FROM_MS(long_press_repeat_timeout_ms) + 1;
+		buffer->btn_cnt_long_rpt = HM_TIMER_TICKS_FROM_MS(long_press_repeat_timeout_ms) + 1;
 		if (signal_long_press_repeat)
 			signal_long_press_repeat();
 	}
 	
 	// decrement counters if in use
-	if (buffer->btn_ctr_smoothing)
-		buffer->btn_ctr_smoothing--;
-	if (detect_long_press && buffer->btn_ctr_long)
-		buffer->btn_ctr_long--;
-	if (detect_long_repeat_end && buffer->btn_ctr_long_rpt)
-		buffer->btn_ctr_long_rpt--;
+	if (buffer->btn_cnt_smoothing)
+		buffer->btn_cnt_smoothing--;
+	if (detect_long_press && buffer->btn_cnt_long)
+		buffer->btn_cnt_long--;
+	if (detect_long_repeat_end && buffer->btn_cnt_long_rpt)
+		buffer->btn_cnt_long_rpt--;
 }	
 	
 
@@ -119,8 +119,8 @@ static inline __attribute__((always_inline)) void hm_button_task_halfwave(
 	bool detect_long_repeat_end = long_press_repeat_timeout_ms;
 
 	// make sure half-wave counter is off whenever "pressed" is received
-	if (btn_state_now && buffer->btn_ctr_smoothing)
-		buffer->btn_ctr_smoothing = 0;
+	if (btn_state_now && buffer->btn_cnt_smoothing)
+		buffer->btn_cnt_smoothing = 0;
 	
 	if (btn_state_now != buffer->btn_state_last)
 	{
@@ -129,7 +129,7 @@ static inline __attribute__((always_inline)) void hm_button_task_halfwave(
 		{
 			if (detect_long_press)
 				// start counter long
-				buffer->btn_ctr_long = HM_TIMER_TICKS_FROM_MS(long_press_timeout_ms) + 1;
+				buffer->btn_cnt_long = HM_TIMER_TICKS_FROM_MS(long_press_timeout_ms) + 1;
 			if (signal_button_down)
 				// signal button down
 				signal_button_down();
@@ -139,10 +139,10 @@ static inline __attribute__((always_inline)) void hm_button_task_halfwave(
 		else
 		{
 			//  half-wave counter
-			switch (buffer->btn_ctr_smoothing)
+			switch (buffer->btn_cnt_smoothing)
 			{
 				case 0:	// off -> either button released or just negative half-wave -> start counter
-					buffer->btn_ctr_smoothing = HM_TIMER_TICKS_FROM_MS(halfwave_timeout_ms);
+					buffer->btn_cnt_smoothing = HM_TIMER_TICKS_FROM_MS(halfwave_timeout_ms);
 					break;
 					
 				default: // elapsing -> stay still and wait ;-)
@@ -152,19 +152,19 @@ static inline __attribute__((always_inline)) void hm_button_task_halfwave(
 					if (detect_long_press)
 					{
 						// if counter long is still running -> it was a short click
-						if (buffer->btn_ctr_long)
+						if (buffer->btn_cnt_long)
 						{
 							if (signal_short_click)
 								signal_short_click();
 						}
 						// if counter repeat is already running -> we might be interested in the end of the long press
-						if (detect_long_repeat_end && buffer->btn_ctr_long_rpt)
+						if (detect_long_repeat_end && buffer->btn_cnt_long_rpt)
 						{
 							if (signal_long_press_end)
 								signal_long_press_end();
 						}
 						// reset both
-						buffer->btn_ctr_long = buffer->btn_ctr_long_rpt = 0;
+						buffer->btn_cnt_long = buffer->btn_cnt_long_rpt = 0;
 					}
 					// save button state
 					buffer->btn_state_last = btn_state_now;
@@ -174,29 +174,29 @@ static inline __attribute__((always_inline)) void hm_button_task_halfwave(
 	}
 	
 	// if counter long is elapsed, start counter long repeat and signal long press (start)
-	if (detect_long_press && buffer->btn_ctr_long == 1)
+	if (detect_long_press && buffer->btn_cnt_long == 1)
 	{
 		if (detect_long_repeat_end)
-			buffer->btn_ctr_long_rpt = HM_TIMER_TICKS_FROM_MS(long_press_repeat_timeout_ms) + 1;
+			buffer->btn_cnt_long_rpt = HM_TIMER_TICKS_FROM_MS(long_press_repeat_timeout_ms) + 1;
 		if (signal_long_press_start)
 			signal_long_press_start();
 	}
 	
 	// if counter long repeat is elapsed, restart and signal long repeat
-	if (detect_long_repeat_end && buffer->btn_ctr_long_rpt == 1)
+	if (detect_long_repeat_end && buffer->btn_cnt_long_rpt == 1)
 	{
-		buffer->btn_ctr_long_rpt = HM_TIMER_TICKS_FROM_MS(long_press_repeat_timeout_ms) + 1;
+		buffer->btn_cnt_long_rpt = HM_TIMER_TICKS_FROM_MS(long_press_repeat_timeout_ms) + 1;
 		if (signal_long_press_repeat)
 			signal_long_press_repeat();
 	}
 	
 	// decrement counters if in use
-	if (buffer->btn_ctr_smoothing)
-		buffer->btn_ctr_smoothing--;
-	if (detect_long_press && buffer->btn_ctr_long)
-		buffer->btn_ctr_long--;
-	if (detect_long_repeat_end && buffer->btn_ctr_long_rpt)
-		buffer->btn_ctr_long_rpt--;
+	if (buffer->btn_cnt_smoothing)
+		buffer->btn_cnt_smoothing--;
+	if (detect_long_press && buffer->btn_cnt_long)
+		buffer->btn_cnt_long--;
+	if (detect_long_repeat_end && buffer->btn_cnt_long_rpt)
+		buffer->btn_cnt_long_rpt--;
 }	
 
 
@@ -249,7 +249,7 @@ static inline __attribute__((always_inline)) void hm_button_task_gira_nebenstell
 		{
 			if (detect_long_press)
 				// start counter long
-				buffer->btn_ctr_long = HM_TIMER_TICKS_FROM_MS(long_press_timeout_ms) + 1;
+				buffer->btn_cnt_long = HM_TIMER_TICKS_FROM_MS(long_press_timeout_ms) + 1;
 			if (signal_button_down)
 				// signal button down
 				signal_event(button_down, btn_state_now);
@@ -259,17 +259,17 @@ static inline __attribute__((always_inline)) void hm_button_task_gira_nebenstell
 			if (detect_long_press)
 			{
 				// if counter long is still running -> it was a short click
-				if (buffer->btn_ctr_long)
+				if (buffer->btn_cnt_long)
 				{
 					signal_event(short_click, buffer->btn_state_last);
 				}
 				// if counter repeat is already running -> we might be interested in the end of the long press
-				if (detect_long_repeat_end && buffer->btn_ctr_long_rpt)
+				if (detect_long_repeat_end && buffer->btn_cnt_long_rpt)
 				{
 					signal_event(long_press_end, buffer->btn_state_last);
 				}
 				// reset both
-				buffer->btn_ctr_long = buffer->btn_ctr_long_rpt = 0;
+				buffer->btn_cnt_long = buffer->btn_cnt_long_rpt = 0;
 			}
 		}			
 		// save button state
@@ -277,25 +277,25 @@ static inline __attribute__((always_inline)) void hm_button_task_gira_nebenstell
 	}
 	
 	// if counter long is elapsed, start counter long repeat and signal long press (start)
-	if (detect_long_press && buffer->btn_ctr_long == 1)
+	if (detect_long_press && buffer->btn_cnt_long == 1)
 	{
 		if (detect_long_repeat_end)
-			buffer->btn_ctr_long_rpt = HM_TIMER_TICKS_FROM_MS(long_press_repeat_timeout_ms) + 1;
+			buffer->btn_cnt_long_rpt = HM_TIMER_TICKS_FROM_MS(long_press_repeat_timeout_ms) + 1;
 		signal_event(long_press_start, btn_state_now);
 	}
 	
 	// if counter long repeat is elapsed, restart and signal long repeat
-	if (detect_long_repeat_end && buffer->btn_ctr_long_rpt == 1)
+	if (detect_long_repeat_end && buffer->btn_cnt_long_rpt == 1)
 	{
-		buffer->btn_ctr_long_rpt = HM_TIMER_TICKS_FROM_MS(long_press_repeat_timeout_ms) + 1;
+		buffer->btn_cnt_long_rpt = HM_TIMER_TICKS_FROM_MS(long_press_repeat_timeout_ms) + 1;
 		signal_event(long_press_repeat, btn_state_now);
 	}
 	
 	// decrement counters if in use
-	if (detect_long_press && buffer->btn_ctr_long)
-		buffer->btn_ctr_long--;
-	if (detect_long_repeat_end && buffer->btn_ctr_long_rpt)
-		buffer->btn_ctr_long_rpt--;
+	if (detect_long_press && buffer->btn_cnt_long)
+		buffer->btn_cnt_long--;
+	if (detect_long_repeat_end && buffer->btn_cnt_long_rpt)
+		buffer->btn_cnt_long_rpt--;
 }	
 
 #endif /* HM_BUTTONS_GIRA_BUFFER_SIZE */

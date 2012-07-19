@@ -27,8 +27,7 @@ typedef struct {
 } hm_param_bank_sequence_t;
 
 typedef struct {
-	uint8_t channel;
-	uint8_t peer_id;
+	uint8_t peering_id;
 	uint8_t param_list;
 	bool is_sequence;
 	union {
@@ -40,8 +39,8 @@ typedef struct {
 } hm_param_bank_t;
 
 
-int8_t hm_config_get_param_bank_id(uint8_t channel, uint8_t peer_id, uint8_t param_list, uint8_t param_index);
-void hm_config_write(uint8_t channel, uint8_t peer_id, uint8_t param_list, hm_parameter_pair_t *p_params, uint8_t count, uint24hm_t *p_frm_addr_src);
+uint8_t hm_config_get_param_bank_id(uint8_t peering_id, uint8_t param_list, uint8_t param_index);
+void hm_config_write(uint8_t peering_id, uint8_t param_list, hm_parameter_pair_t *p_params, uint8_t count, uint24hm_t *p_frm_addr_src);
 bool hm_config_load();
 void hm_config_store();
 

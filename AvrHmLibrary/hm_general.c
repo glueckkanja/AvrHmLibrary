@@ -12,9 +12,7 @@ uint8_t hm_packet_enc[MAX_ASKSIN_MSG];
 uint8_t hm_rssi, hm_lqi;
 
 
-uint24hm_t hm_my_addr;
-
-uint8_t hm_frm_ctr;
+uint8_t hm_frm_cnt;
 
 hm_frame_t hm_frm_in;
 uint8_t hm_frm_in_ack_subtype;
@@ -30,7 +28,7 @@ uint8_t hm_waiting_for_pairing_start_secs;
 
 bool hm_is_in_mode_config;
 uint8_t hm_mode_config_channel;
-int8_t hm_mode_config_peer_id;
+uint8_t hm_mode_config_peering_id;
 uint8_t hm_mode_config_param_list;
 
 bool hm_is_frame_from_ccu;
@@ -38,14 +36,24 @@ bool hm_is_frame_from_ccu;
 
 void hm_init()
 {
-	hm_my_addr.value = HM_MY_ADDR;
+	eeprom_read_block(&hm_ee_contents, &hm_ee_contents_E, sizeof(hm_ee_contents));
+	if (!hm_eeprom_check())
+	{
+		// no address etc. - unrecoverable error, blink forever...
+		while (1)
+		{
+			LED_ON(); _delay_ms(1000); LED_OFF(); _delay_ms(150); 
+			LED_ON(); _delay_ms(150); LED_OFF(); _delay_ms(150); 
+			LED_ON(); _delay_ms(150); LED_OFF(); _delay_ms(1000); 
+		}
+	}					
+	
 	hm_do_reset = false;
 	hm_do_start_pairing = false;
 	hm_is_waiting_for_pairing = false;
 	hm_is_in_mode_config = false;
 	
-	if (!hm_config_load())
-		hm_config_reset();
+	hm_config_init();
 	
 	hm_timer_init();
 	hm_buttons_init();
@@ -138,10 +146,11 @@ void hm_send_device_info(uint24hm_t addr_dst)
 
 	hm_frm_out.device_info.firmware = HM_DEVINFO_FIRMWARE;
 	hm_frm_out.device_info.type.value = HM_DEVINFO_TYPE;
-	memcpy_P(hm_frm_out.device_info.serial_no, PSTR(HM_DEVINFO_SERIAL_NO), 10);
+	memcpy(hm_frm_out.device_info.serial_no, hm_ee_contents.my_serial, sizeof(hm_frm_out.device_info.serial_no));
 	hm_frm_out.device_info.class = HM_DEVINFO_CLASS;
-	hm_frm_out.device_info.peer_channel_a = HM_DEVINFO_PEER_CHANNEL_A;
-	hm_frm_out.device_info.peer_channel_b = HM_DEVINFO_PEER_CHANNEL_B;
+	hm_frm_out.device_info.channel_info = HM_DEVINFO_CHANNEL_INFO;
+	hm_frm_out.device_info.channel_a = HM_DEVINFO_CHANNEL_A;
+	hm_frm_out.device_info.channel_b = HM_DEVINFO_CHANNEL_B;
 	
 	hm_send();
 }

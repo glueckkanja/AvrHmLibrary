@@ -27,14 +27,16 @@ typedef enum {
 
 typedef struct {
 	uint8_t btn_state_last;
-	uint8_t btn_ctr_smoothing;
-	uint8_t btn_ctr_long;
-	uint8_t btn_ctr_long_rpt;
+	uint8_t btn_cnt_smoothing;
+	uint8_t btn_cnt_long;
+	uint8_t btn_cnt_long_rpt;
 } hm_button_buffer_t;
 
 void hm_buttons_init();
 void hm_buttons_timer();
 
+
+#ifdef HM_BUTTONS_GIRA_BUFFER_SIZE
 
 extern volatile uint8_t hm_buttons_gira_adc_values[HM_BUTTONS_GIRA_BUFFER_SIZE];
 
@@ -47,6 +49,8 @@ static inline __attribute__((always_inline)) void hm_buttons_gira_save_adc_value
 	if (++buffer_pos >= sizeof(hm_buttons_gira_adc_values))
 		buffer_pos = 0;
 }
+
+#endif /* HM_BUTTONS_GIRA_BUFFER_SIZE */
 
 
 #endif /* HM_BUTTONS_H_ */

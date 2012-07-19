@@ -5,11 +5,17 @@
  *  Author: fstorm
  */ 
 
-#include "debug.h"
-#include <hm_main.h>
-
+#include "hm_defines_hardware.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <avr/pgmspace.h>
 #include <util/atomic.h>
 #include <util/delay.h>
+#include "external/pfleury/uart.h"
+
+#include <hm_main.h>
+#include "debug.h"
+
 
 char uart_out[20];
 

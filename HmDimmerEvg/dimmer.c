@@ -5,9 +5,10 @@
  *  Author: fstorm
  */ 
 
-#include "board_defines.h"
+#include "hm_defines_hardware.h"
 #include "debug.h"
 #include "dimmer.h"
+#include <avr/pgmspace.h>
 #include <avr/sfr_defs.h>
 
 int8_t dim_level_percent;
